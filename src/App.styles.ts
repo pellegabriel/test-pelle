@@ -51,3 +51,18 @@ export const UserName = styled.div`
   font-size: 18px;
   font-weight: 600;
 `;
+
+export const UserDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const UserDescription = styled.div`
+  font-size: 14px;
+  color: gray;
+`;
+
+export const UserTimezone = styled.div`
+  font-size: 12px;
+  color: gray;
+`;

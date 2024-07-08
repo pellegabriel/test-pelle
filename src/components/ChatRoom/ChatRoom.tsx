@@ -6,29 +6,42 @@ import {
   MessageInputContainer,
   MessageInput,
   SendMessageButton,
+  MessageContainer,
+  UserAvatar,
 } from './ChatRoom.styles';
+
+interface User {
+  uuid: string;
+  name: string;
+  avatar: string;
+  room: string;
+  timezone: string;
+  description: string;
+}
 
 interface ChatRoomProps {
   room: string;
-  messages: string[];
-  addMessage: (room: string, message: string) => void;
+  messages: { user: User; message: string }[];
+  addMessage: (message: string) => void;
 }
-
 const ChatRoom: React.FC<ChatRoomProps> = ({ room, messages, addMessage }) => {
-  const [newMessage, setNewMessage] = useState<string>("");
+  const [newMessage, setNewMessage] = useState<string>('');
 
   const handleSendMessage = () => {
-    if (newMessage.trim() !== "") {
-      addMessage(room, newMessage);
-      setNewMessage("");
+    if (newMessage.trim() !== '') {
+      addMessage(newMessage);
+      setNewMessage('');
     }
   };
 
   return (
     <ChatRoomContainer>
       <MessagesList>
-        {messages.map((message, index) => (
-          <Message key={index}>{message}</Message>
+       {messages.map((msg, index) => (
+          <MessageContainer key={index}>
+            <UserAvatar src={msg.user.avatar} alt={msg.user.name} />
+            <Message>{msg.message}</Message>
+          </MessageContainer>
         ))}
       </MessagesList>
       <MessageInputContainer>

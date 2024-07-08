@@ -2,16 +2,31 @@ import React, { useState } from "react";
 import axios from "axios";
 import ChatRoom from "./components/ChatRoom/ChatRoom";
 import ChatRoomList from "./components/ChatRoomList/ChatRoomList";
-import { AddUserButton, Container, MainContent, Sidebar, UserAvatar, UserHeader, UserName } from "./App.styles";
+import {
+  AddUserButton,
+  Container,
+  MainContent,
+  Sidebar,
+  UserAvatar,
+  UserDescription,
+  UserDetails,
+  UserHeader,
+  UserName,
+  UserTimezone,
+} from "./App.styles";
 interface User {
   uuid: string;
   name: string;
   avatar: string;
   room: string;
+  timezone: string;
+  description: string;
+  lastConnection: string;
+   lastMessage: string;
 }
 
 interface MessagesByRoom {
-  [key: string]: string[];
+  [key: string]: { user: User; message: string }[];
 }
 
 const App = () => {
@@ -23,11 +38,17 @@ const App = () => {
   });
   const [users, setUsers] = useState<User[]>([]);
 
-  const addMessage = (room: string, message: string) => {
+ const addMessage = (room: string, message: string, user: User) => {
     setMessages((prevMessages) => ({
       ...prevMessages,
-      [room]: [...prevMessages[room], message],
+      [room]: [...prevMessages[room], { user, message }],
     }));
+    // Update lastMessage for the user
+    setUsers((prevUsers) =>
+      prevUsers.map((u) =>
+        u.uuid === user.uuid ? { ...u, lastMessage: message } : u
+      )
+    );
   };
 
   const addUser = async () => {
@@ -39,6 +60,10 @@ const App = () => {
         name: `${newUser.name.first} ${newUser.name.last}`,
         avatar: newUser.picture.thumbnail,
         room: `Room ${users.length + 4}`,
+        timezone: newUser.location.timezone.description,
+        description: newUser.location.street.name,
+        lastConnection: newUser.registered.date,
+        lastMessage: "", 
       };
       setUsers((prevUsers) => [...prevUsers, user]);
       setMessages((prevMessages) => ({
@@ -65,6 +90,7 @@ const App = () => {
         <ChatRoomList
           rooms={rooms}
           users={users}
+          messages={messages}
           setCurrentRoom={setCurrentRoom}
         />
         <AddUserButton onClick={addUser}>+ Create New</AddUserButton>
@@ -73,13 +99,19 @@ const App = () => {
         {currentUser && (
           <UserHeader>
             <UserAvatar src={currentUser.avatar} alt={currentUser.name} />
-            <UserName>{currentUser.name}</UserName>
+            <UserDetails>
+              <UserName>{currentUser.name}</UserName>
+              <UserDescription>{currentUser.description}</UserDescription>
+              <UserTimezone>{currentUser.timezone}</UserTimezone>
+            </UserDetails>
           </UserHeader>
         )}
         <ChatRoom
           room={currentRoom}
           messages={messages[currentRoom]}
-          addMessage={addMessage}
+          addMessage={(message) =>
+            currentUser && addMessage(currentRoom, message, currentUser)
+          }
         />
       </MainContent>
     </Container>

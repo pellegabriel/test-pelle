@@ -43,3 +43,16 @@ export const SendMessageButton = styled.button`
     background-color: #e9e9e9;
   }
 `;
+
+export const MessageContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+`;
+
+export const UserAvatar = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+`;
