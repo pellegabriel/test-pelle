@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import { RoomButton, RoomList, UserAvatar } from './ChatRoomList.styles';
 
 interface User {
   uuid: string;
@@ -31,25 +31,5 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({ rooms, users, setCurrentRoo
     </RoomList>
   );
 };
-
-const RoomList = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-`;
-
-const RoomButton = styled.button`
-  padding: 10px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`;
-
-const UserAvatar = styled.img`
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-`;
 
 export default ChatRoomList;

@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import styled from 'styled-components';
-import ChatRoomList from './components/ChatRoomList';
-import ChatRoom from './components/ChatRoom';
-
+import React, { useState } from "react";
+import axios from "axios";
+import ChatRoom from "./components/ChatRoom/ChatRoom";
+import ChatRoomList from "./components/ChatRoomList/ChatRoomList";
+import { AddUserButton, Container, MainContent, Sidebar, UserAvatar, UserHeader, UserName } from "./App.styles";
 interface User {
   uuid: string;
   name: string;
@@ -15,25 +14,25 @@ interface MessagesByRoom {
   [key: string]: string[];
 }
 
-const App: React.FC = () => {
-  const [currentRoom, setCurrentRoom] = useState<string>('Room 1');
+const App = () => {
+  const [currentRoom, setCurrentRoom] = useState<string>("Room 1");
   const [messages, setMessages] = useState<MessagesByRoom>({
-    'Room 1': [],
-    'Room 2': [],
-    'Room 3': []
+    "Room 1": [],
+    "Room 2": [],
+    "Room 3": [],
   });
   const [users, setUsers] = useState<User[]>([]);
 
   const addMessage = (room: string, message: string) => {
-    setMessages(prevMessages => ({
+    setMessages((prevMessages) => ({
       ...prevMessages,
-      [room]: [...prevMessages[room], message]
+      [room]: [...prevMessages[room], message],
     }));
   };
 
   const addUser = async () => {
     try {
-      const response = await axios.get('https://randomuser.me/api/');
+      const response = await axios.get("https://randomuser.me/api/");
       const newUser = response.data.results[0];
       const user: User = {
         uuid: newUser.login.uuid,
@@ -41,36 +40,50 @@ const App: React.FC = () => {
         avatar: newUser.picture.thumbnail,
         room: `Room ${users.length + 4}`,
       };
-      setUsers(prevUsers => [...prevUsers, user]);
-      setMessages(prevMessages => ({
+      setUsers((prevUsers) => [...prevUsers, user]);
+      setMessages((prevMessages) => ({
         ...prevMessages,
-        [user.room]: []
+        [user.room]: [],
       }));
     } catch (error) {
-      console.error('Error fetching new user:', error);
+      console.error("Error fetching new user:", error);
     }
   };
 
-  const rooms: string[] = ['Room 1', 'Room 2', 'Room 3', ...users.map(user => user.room)];
+  const rooms: string[] = [
+    "Room 1",
+    "Room 2",
+    "Room 3",
+    ...users.map((user) => user.room),
+  ];
+
+  const currentUser = users.find((user) => user.room === currentRoom);
 
   return (
     <Container>
-      <ChatRoomList rooms={rooms} users={users} setCurrentRoom={setCurrentRoom} />
-      <ChatRoom room={currentRoom} messages={messages[currentRoom]} addMessage={addMessage} />
-      <AddUserButton onClick={addUser}>Add User</AddUserButton>
+      <Sidebar>
+        <ChatRoomList
+          rooms={rooms}
+          users={users}
+          setCurrentRoom={setCurrentRoom}
+        />
+        <AddUserButton onClick={addUser}>+ Create New</AddUserButton>
+      </Sidebar>
+      <MainContent>
+        {currentUser && (
+          <UserHeader>
+            <UserAvatar src={currentUser.avatar} alt={currentUser.name} />
+            <UserName>{currentUser.name}</UserName>
+          </UserHeader>
+        )}
+        <ChatRoom
+          room={currentRoom}
+          messages={messages[currentRoom]}
+          addMessage={addMessage}
+        />
+      </MainContent>
     </Container>
   );
 };
-
-const Container = styled.div`
-  padding: 20px;
-`;
-
-const AddUserButton = styled.button`
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-`;
 
 export default App;
