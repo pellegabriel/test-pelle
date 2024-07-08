@@ -22,7 +22,7 @@ interface User {
   timezone: string;
   description: string;
   lastConnection: string;
-   lastMessage: string;
+  lastMessage: string;
 }
 
 interface MessagesByRoom {
@@ -38,12 +38,11 @@ const App = () => {
   });
   const [users, setUsers] = useState<User[]>([]);
 
- const addMessage = (room: string, message: string, user: User) => {
+  const addMessage = (room: string, message: string, user: User) => {
     setMessages((prevMessages) => ({
       ...prevMessages,
       [room]: [...prevMessages[room], { user, message }],
     }));
-    // Update lastMessage for the user
     setUsers((prevUsers) =>
       prevUsers.map((u) =>
         u.uuid === user.uuid ? { ...u, lastMessage: message } : u
@@ -63,7 +62,7 @@ const App = () => {
         timezone: newUser.location.timezone.description,
         description: newUser.location.street.name,
         lastConnection: newUser.registered.date,
-        lastMessage: "", 
+        lastMessage: "",
       };
       setUsers((prevUsers) => [...prevUsers, user]);
       setMessages((prevMessages) => ({

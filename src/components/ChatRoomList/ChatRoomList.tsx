@@ -23,7 +23,6 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({
   messages,
   setCurrentRoom,
 }) => {
-  
   return (
     <RoomList>
       {rooms.slice(0, 3).map((room, index) => (
@@ -36,7 +35,9 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({
         const lastMessage = lastMessageObj
           ? lastMessageObj.message
           : "No messages yet";
-        const lastConnectionTime = new Date(user.lastConnection).toLocaleTimeString();
+        const lastConnectionTime = new Date(
+          user.lastConnection
+        ).toLocaleTimeString();
         return (
           <RoomButton key={user.uuid} onClick={() => setCurrentRoom(user.room)}>
             <UserAvatar src={user.avatar} alt={user.name} />
