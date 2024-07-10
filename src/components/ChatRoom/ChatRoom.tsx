@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   ChatRoomContainer,
   MessagesList,
@@ -9,6 +9,7 @@ import {
   MessageContainer,
   UserAvatar,
 } from './ChatRoom.styles';
+import userImage from '../../assets/user.png';
 
 interface User {
   uuid: string;
@@ -17,6 +18,7 @@ interface User {
   room: string;
   timezone: string;
   description: string;
+  isCurrentUser: boolean;
 }
 
 interface ChatRoomProps {
@@ -24,6 +26,8 @@ interface ChatRoomProps {
   messages: { user: User; message: string }[];
   addMessage: (message: string) => void;
 }
+
+
 const ChatRoom: React.FC<ChatRoomProps> = ({ room, messages, addMessage }) => {
   const [newMessage, setNewMessage] = useState<string>('');
 
@@ -37,10 +41,14 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ room, messages, addMessage }) => {
   return (
     <ChatRoomContainer>
       <MessagesList>
-       {messages.map((msg, index) => (
-          <MessageContainer key={index}>
-            <UserAvatar src={msg.user.avatar} alt={msg.user.name} />
-            <Message>{msg.message}</Message>
+        {messages.map((msg, index) => (
+          <MessageContainer key={index} isUser={msg.user.isCurrentUser}>
+            <UserAvatar
+              src={msg.user.isCurrentUser ? userImage : msg.user.avatar}
+              alt={msg.user.name}
+              isUser={msg.user.isCurrentUser}
+            />
+            <Message isUser={msg.user.isCurrentUser}>{msg.message}</Message>
           </MessageContainer>
         ))}
       </MessagesList>

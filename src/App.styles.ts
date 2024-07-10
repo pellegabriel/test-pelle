@@ -18,13 +18,17 @@ export const AddUserButton = styled.button`
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
+  font-weight: bold; 
   cursor: pointer;
   border: none;
   background-color: #191a1e;
   color: white;
-  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; 
   &:hover {
-    background-color: #3c3d3f;
+    color: #3c3d3f;
   }
 `;
 
