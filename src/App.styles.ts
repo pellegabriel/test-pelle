@@ -22,11 +22,11 @@ export const AddUserButton = styled.button`
   cursor: pointer;
   border: none;
   background-color: #191a1e;
-  color: white;
+  color: #b1b1b1;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px; 
+  gap: 15px; 
   &:hover {
     color: #3c3d3f;
   }

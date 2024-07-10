@@ -1,10 +1,6 @@
-import React from 'react';
+import { MessageListProps } from "./types";
 
-interface MessageListProps {
-  messages: string[];
-}
-
-const MessageList: React.FC<MessageListProps> = ({ messages }) => {
+const MessageList = ({ messages }: MessageListProps) => {
   return (
     <div className="message-list">
       {messages.map((msg, index) => (

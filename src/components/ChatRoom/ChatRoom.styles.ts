@@ -42,10 +42,12 @@ export const Message = styled.div<{ isUser: boolean }>`
   background-color: ${({ isUser }) => (isUser ? '#fceded' : '#ffffff')};
   color: #333;
   margin-top: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Agregar sombra */
+
   ${({ isUser }) =>
     isUser
       ? css`
-          margin-left: 10px;
+          margin-right: 10px;
           &::before {
             content: "";
             position: absolute;
@@ -59,7 +61,7 @@ export const Message = styled.div<{ isUser: boolean }>`
           }
         `
       : css`
-          margin-right: 10px;
+          margin-left: 10px;
           &::before {
             content: "";
             position: absolute;
@@ -85,18 +87,20 @@ export const MessageInput = styled.input`
   flex-grow: 1;
   padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 20px;
+  border-radius: 15px;
   margin-right: 10px;
   outline: none;
+  background-color: #fbfbfb;
 `;
 
 export const SendMessageButton = styled.button`
-  padding: 10px 15px;
+  padding: 10px 25px;
   border: none;
-  background-color: #e9e9e9;
-  color: #959595;
-  border-radius: 20px;
+  background-color: #f0f0f0;
+  color: #868686;
+  border-radius: 15px;
   cursor: pointer;
+  font-weight: bold;
   &:hover {
     background-color: #cacaca;
   }

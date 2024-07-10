@@ -16,7 +16,7 @@ export const RoomButton = styled.button`
   border: none;
   width: 100%;
   text-align: left;
-  border-bottom: 1px solid gray;
+  border-bottom: 2px solid gray;
 
   &:hover {
     background-color: #3c3d3f;

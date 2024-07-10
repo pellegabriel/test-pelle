@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 import {
   ChatRoomContainer,
   MessagesList,
@@ -8,33 +8,17 @@ import {
   SendMessageButton,
   MessageContainer,
   UserAvatar,
-} from './ChatRoom.styles';
-import userImage from '../../assets/user.png';
+} from "./ChatRoom.styles";
+import userImage from "../../assets/user.png";
+import { ChatRoomProps } from "./types";
 
-interface User {
-  uuid: string;
-  name: string;
-  avatar: string;
-  room: string;
-  timezone: string;
-  description: string;
-  isCurrentUser: boolean;
-}
-
-interface ChatRoomProps {
-  room: string;
-  messages: { user: User; message: string }[];
-  addMessage: (message: string) => void;
-}
-
-
-const ChatRoom: React.FC<ChatRoomProps> = ({ room, messages, addMessage }) => {
-  const [newMessage, setNewMessage] = useState<string>('');
+export const ChatRoom = ({ messages, addMessage }: ChatRoomProps) => {
+  const [newMessage, setNewMessage] = useState<string>("");
 
   const handleSendMessage = () => {
-    if (newMessage.trim() !== '') {
+    if (newMessage.trim() !== "") {
       addMessage(newMessage);
-      setNewMessage('');
+      setNewMessage("");
     }
   };
 
@@ -64,5 +48,3 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ room, messages, addMessage }) => {
     </ChatRoomContainer>
   );
 };
-
-export default ChatRoom;
