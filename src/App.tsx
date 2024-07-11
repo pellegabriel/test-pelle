@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { ChatRoom } from "./components/ChatRoom/ChatRoom";
 import { ChatRoomList } from "./components/ChatRoomList/ChatRoomList";
 import {
@@ -12,52 +12,29 @@ import {
   UserHeader,
   UserName,
   UserTimezone,
+  MenuButton,
 } from "./App.styles";
 import { LogoHeader } from "./components/ChatRoomList/LogoHeader";
 import { GlobalStyle } from "./global.styles";
-import { FaPlus } from "react-icons/fa";
-import {
-  fetchUser,
-  addMessage,
-  addUser,
-  handleSendMessage,
-  User,
-  MessagesByRoom,
-} from "./utils/utils";
+import { FaPlus, FaBars } from "react-icons/fa";
+import { useChatSystem } from "./hooks/useChatSystem";
 
- const App = () => {
-  const [currentRoom, setCurrentRoom] = useState<string>("");
-  const [messages, setMessages] = useState<MessagesByRoom>({});
-  const [users, setUsers] = useState<User[]>([]);
-
-  useEffect(() => {
-    const fetchInitialUsers = async () => {
-      const initialUsers = [];
-      for (let i = 0; i < 3; i++) {
-        const user = await fetchUser();
-        if (user) initialUsers.push(user);
-      }
-      setUsers(initialUsers);
-      setMessages(
-        initialUsers.reduce((acc, user) => {
-          acc[user.room] = [];
-          return acc;
-        }, {} as MessagesByRoom)
-      );
-      if (initialUsers.length > 0) setCurrentRoom(initialUsers[0].room);
-    };
-
-    fetchInitialUsers();
-  }, []);
+const App = () => {
+  const {
+    users,
+    addUser,
+    messages,
+    currentRoom,
+    setCurrentRoom,
+    initializeUsers,
+    handleSendMessage,
+    isSidebarOpen,
+    toggleSidebar,
+  } = useChatSystem();
 
   useEffect(() => {
-    setUsers((prevUsers) =>
-      prevUsers.map((u) => ({
-        ...u,
-        isCurrentUser: u.room === currentRoom,
-      }))
-    );
-  }, [currentRoom]);
+    initializeUsers();
+  }, [initializeUsers]);
 
   const currentUser = users.find((user) => user.room === currentRoom);
 
@@ -65,18 +42,15 @@ import {
     <>
       <GlobalStyle />
       <Container>
-        <Sidebar>
+        <MenuButton onClick={toggleSidebar}>
+          <FaBars />
+        </MenuButton>
+        <Sidebar isOpen={isSidebarOpen}>
           <LogoHeader />
-          <ChatRoomList
-            users={users}
-            messages={messages}
-            setCurrentRoom={setCurrentRoom}
-          />
-          <AddUserButton
-            onClick={() =>
-              addUser(users, setUsers, setMessages, setCurrentRoom)
-            }>
-            <FaPlus size={20} /> Create New
+          <ChatRoomList users={users} setCurrentRoom={setCurrentRoom} />
+          <AddUserButton onClick={addUser}>
+            <FaPlus size={20} />
+            Create New
           </AddUserButton>
         </Sidebar>
         <MainContent>
@@ -93,18 +67,11 @@ import {
           <ChatRoom
             room={currentRoom}
             messages={messages[currentRoom] || []}
-            addMessage={(message) =>
-              currentUser &&
-              handleSendMessage(
-                message,
-                currentUser,
-                currentRoom,
-                addMessage,
-                messages,
-                setMessages,
-                setUsers
-              )
-            }
+            addMessage={(message) => {
+              if (currentUser) {
+                handleSendMessage(message, currentUser, currentRoom);
+              }
+            }}
           />
         </MainContent>
       </Container>
@@ -112,4 +79,4 @@ import {
   );
 };
 
-export default App
+export default App;

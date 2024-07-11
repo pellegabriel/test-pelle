@@ -1,4 +1,6 @@
-import { MessageListProps } from "./types";
+interface MessageListProps {
+  messages: string[];
+}
 
 const MessageList = ({ messages }: MessageListProps) => {
   return (

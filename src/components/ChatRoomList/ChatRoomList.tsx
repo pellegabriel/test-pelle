@@ -1,3 +1,4 @@
+import React, { memo } from "react";
 import {
   RoomButton,
   RoomList,
@@ -8,34 +9,44 @@ import {
   UserNameContainer,
   UserLastConnection,
 } from "./ChatRoomList.styles";
-import { ChatRoomListProps } from "./types";
+import { User } from "../../api/users";
 
-export const ChatRoomList = ({ users, setCurrentRoom }: ChatRoomListProps) => {
+interface ChatRoomListProps {
+  users: User[];
+  setCurrentRoom: (room: string) => void;
+}
+
+export const ChatRoomList = memo(({ users, setCurrentRoom }: ChatRoomListProps) => {
   return (
     <RoomList>
-      {users.map((user) => (
-        <RoomButton key={user.uuid} onClick={() => setCurrentRoom(user.room)}>
-          <UserAvatar src={user.avatar} alt={user.name} />
-          <UserInfo>
-            <UserNameContainer>
-              <UserName>{user.name}</UserName>
-              <UserLastConnection>
-                {new Date(user.lastConnection).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-                })}
-              </UserLastConnection>
-            </UserNameContainer>
-            <LastMessage>
-              {user.lastMessage
-                ? user.lastMessage.substring(0, 30) +
-                  (user.lastMessage.length > 30 ? "..." : "")
-                : "No messages yet"}
-            </LastMessage>
-          </UserInfo>
-        </RoomButton>
-      ))}
+      {users.map((user) => {
+        const lastConnection = new Date(user.lastConnection).toLocaleTimeString([], {
+          hour12: true,
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+
+        const lastMessage = user.lastMessage
+          ? user.lastMessage.substring(0, 30) + (user.lastMessage.length > 30 ? "..." : "")
+          : "No messages yet"
+
+        return (
+          <RoomButton key={user.uuid} onClick={() => setCurrentRoom(user.room)}>
+            <UserAvatar src={user.avatar} alt={user.name} />
+            <UserInfo>
+              <UserNameContainer>
+                <UserName>{user.name}</UserName>
+                <UserLastConnection>
+                  {lastConnection}
+                </UserLastConnection>
+              </UserNameContainer>
+              <LastMessage>
+                {lastMessage}
+              </LastMessage>
+            </UserInfo>
+          </RoomButton>
+        )
+      })}
     </RoomList>
   );
-};
+});

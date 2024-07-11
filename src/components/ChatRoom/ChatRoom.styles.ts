@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
 export const ChatRoomContainer = styled.div`
   display: flex;
@@ -11,6 +11,9 @@ export const MessagesList = styled.div`
   padding: 20px;
   overflow-y: auto;
   background-color: #e9e9e9;
+  @media (max-width: 768px) {
+    max-height: 100%;
+  }
 `;
 
 export const MessageContainer = styled.div<{ isUser: boolean }>`
@@ -31,7 +34,7 @@ export const UserAvatar = styled.img<{ isUser: boolean }>`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  margin: ${({ isUser }) => (isUser ? '0 0 0 10px' : '0 10px 0 0')};
+  margin: ${({ isUser }) => (isUser ? "0 0 0 10px" : "0 10px 0 0")};
 `;
 
 export const Message = styled.div<{ isUser: boolean }>`
@@ -39,10 +42,10 @@ export const Message = styled.div<{ isUser: boolean }>`
   padding: 10px 15px;
   border-radius: 5px 5px 5px;
   position: relative;
-  background-color: ${({ isUser }) => (isUser ? '#fceded' : '#ffffff')};
+  background-color: ${({ isUser }) => (isUser ? "#fceded" : "#ffffff")};
   color: #333;
   margin-top: 5px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Agregar sombra */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Agregar sombra */
 
   ${({ isUser }) =>
     isUser
