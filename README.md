@@ -1,5 +1,5 @@
 # PSh Frontend Exam - React Chat
-## URL: https://test-pelle.vercel.app/
+## URL: https://test-pelle-9ctux3pe6-pellegabriels-projects.vercel.app/
 
 ## Instruction:
 It is requested to develop a webapp in chat format that meets the following items:
