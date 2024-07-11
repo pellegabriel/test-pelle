@@ -121,12 +121,3 @@ export const UserDescription = styled.div`
     font-size: 0.9em;
   }
 `;
-
-export const UserTimezone = styled.div`
-  font-size: 12px;
-  color: gray;
-
-  @media (max-width: 768px) {
-    font-size: 0.8em;
-  }
-`;

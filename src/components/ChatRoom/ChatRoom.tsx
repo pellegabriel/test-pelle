@@ -8,13 +8,15 @@ import {
   ChatRoomContainer,
   SendMessageButton,
   MessageInputContainer,
+  MessageTimestamp,
+  MessageContent,
 } from "./ChatRoom.styles";
 import { User } from "../../api/users";
 import userImage from "../../assets/user.png";
 
 interface ChatRoomProps {
   room: string;
-  messages: { user: User; message: string }[];
+  messages: { user: User; message: string; timestamp: string }[];
   addMessage: (message: string) => void;
 }
 
@@ -28,9 +30,12 @@ export const ChatRoom = memo(({ messages, addMessage }: ChatRoomProps) => {
     }
   }, [newMessage, addMessage]);
 
-  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewMessage(e.target.value);
-  }, []);
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setNewMessage(e.target.value);
+    },
+    []
+  );
 
   return (
     <ChatRoomContainer>
@@ -42,7 +47,12 @@ export const ChatRoom = memo(({ messages, addMessage }: ChatRoomProps) => {
               isUser={msg.user.isCurrentUser}
               src={msg.user.isCurrentUser ? userImage : msg.user.avatar}
             />
-            <Message isUser={msg.user.isCurrentUser}>{msg.message}</Message>
+            <MessageContent>
+              <MessageTimestamp isUser={msg.user.isCurrentUser}>
+                {msg.timestamp}
+              </MessageTimestamp>
+              <Message isUser={msg.user.isCurrentUser}>{msg.message}</Message>
+            </MessageContent>
           </MessageContainer>
         ))}
       </MessagesList>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ChatRoom } from "./components/ChatRoom/ChatRoom";
 import { ChatRoomList } from "./components/ChatRoomList/ChatRoomList";
 import {
@@ -11,7 +11,6 @@ import {
   UserDetails,
   UserHeader,
   UserName,
-  UserTimezone,
   MenuButton,
 } from "./App.styles";
 import { LogoHeader } from "./components/ChatRoomList/LogoHeader";
@@ -28,15 +27,18 @@ const App = () => {
     setCurrentRoom,
     initializeUsers,
     handleSendMessage,
-    isSidebarOpen,
-    toggleSidebar,
   } = useChatSystem();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     initializeUsers();
   }, [initializeUsers]);
 
   const currentUser = users.find((user) => user.room === currentRoom);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
     <>
@@ -47,7 +49,14 @@ const App = () => {
         </MenuButton>
         <Sidebar isOpen={isSidebarOpen}>
           <LogoHeader />
-          <ChatRoomList users={users} setCurrentRoom={setCurrentRoom} />
+          <ChatRoomList
+            users={users}
+            currentRoom={currentRoom}
+            setCurrentRoom={(room: string) => {
+              setCurrentRoom(room);
+              setIsSidebarOpen(false);
+            }}
+          />
           <AddUserButton onClick={addUser}>
             <FaPlus size={20} />
             Create New
@@ -60,7 +69,6 @@ const App = () => {
               <UserDetails>
                 <UserName>{currentUser.name}</UserName>
                 <UserDescription>{currentUser.description}</UserDescription>
-                <UserTimezone>{currentUser.timezone}</UserTimezone>
               </UserDetails>
             </UserHeader>
           )}

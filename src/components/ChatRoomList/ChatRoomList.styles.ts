@@ -1,11 +1,11 @@
-import styled from 'styled-components';
+import styled, { css } from "styled-components";
 
 export const RoomList = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-export const RoomButton = styled.button`
+export const RoomButton = styled.button<{ isActive: boolean }>`
   padding: 10px;
   cursor: pointer;
   color: white;
@@ -17,6 +17,14 @@ export const RoomButton = styled.button`
   width: 100%;
   text-align: left;
   border-bottom: 2px solid gray;
+  border-right: 5px solid transparent;
+
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      background-color: #3c3d3f;
+      border-right-color: red;
+    `}
 
   &:hover {
     background-color: #3c3d3f;
@@ -48,7 +56,7 @@ export const UserName = styled.span`
 `;
 
 export const UserLastConnection = styled.span`
-  font-size: 0.8em;
+  font-size: 0.7em;
   color: #a1a1a1;
 `;
 

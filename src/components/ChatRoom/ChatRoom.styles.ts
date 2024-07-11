@@ -37,16 +37,19 @@ export const UserAvatar = styled.img<{ isUser: boolean }>`
   margin: ${({ isUser }) => (isUser ? "0 0 0 10px" : "0 10px 0 0")};
 `;
 
-export const Message = styled.div<{ isUser: boolean }>`
+export const MessageContent = styled.div`
+  display: flex;
+  flex-direction: column;
   max-width: 60%;
+`;
+
+export const Message = styled.div<{ isUser: boolean }>`
   padding: 10px 15px;
   border-radius: 5px 5px 5px;
   position: relative;
   background-color: ${({ isUser }) => (isUser ? "#fceded" : "#ffffff")};
   color: #333;
-  margin-top: 5px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Agregar sombra */
-
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   ${({ isUser }) =>
     isUser
       ? css`
@@ -77,6 +80,13 @@ export const Message = styled.div<{ isUser: boolean }>`
             border-color: transparent #ffffff transparent transparent;
           }
         `}
+`;
+
+export const MessageTimestamp = styled.div<{ isUser: boolean }>`
+  font-size: 0.6em;
+  color: #a1a1a1;
+  text-align: ${({ isUser }) => (isUser ? "left" : "right")};
+  margin-bottom: 5px;
 `;
 
 export const MessageInputContainer = styled.div`

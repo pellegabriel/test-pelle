@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { fetchUser, simulateResponse, User } from "../api/users";
 
 export interface MessagesByRoom {
-  [key: string]: { user: User; message: string }[];
+  [key: string]: { user: User; message: string; timestamp: string }[];
 }
 
 export const useChatSystem = () => {
@@ -13,9 +13,14 @@ export const useChatSystem = () => {
 
   const addMessage = useCallback(
     (room: string, message: string, user: User) => {
+      const timestamp = new Date().toLocaleTimeString([], {
+        hour12: true,
+        hour: "2-digit",
+        minute: "2-digit",
+      });
       setMessages((prevMessages) => ({
         ...prevMessages,
-        [room]: [...(prevMessages[room] || []), { user, message }],
+        [room]: [...(prevMessages[room] || []), { user, message, timestamp }],
       }));
       setUsers((prevUsers) =>
         prevUsers.map((u) =>
