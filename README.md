@@ -21,6 +21,8 @@ It is requested to develop a webapp in chat format that meets the following item
 - Folder with [Preview and Assets](https://www.dropbox.com/sh/2m4c1yo3bacqx6u/AAAtMJ2qFNlxjwb9FZt_CeGUa?dl=0).
 - Typography: [Montserrat](https://fonts.google.com/specimen/Montserrat).
 
+## To run the app:
+
 In the project directory, you can run:
 
 ### `npm start`
